@@ -1,0 +1,16 @@
+Incident ID: INC-2024-002
+Date: 2024-01-20
+Cluster: Spark-Cluster-B
+Application: ML Training
+Error Summary: ML training job killed. urgent!! needed for release tomorrow
+Root Cause: See work notes for details
+Resolution:
+  - To sort merge join, job completed successfully
+Key Learnings: Took 2x longer but stable
+Work Notes:
+job killed with OOM error in driver logs
+dataset size is 50GB, using broadcast join
+broadcast threshold set to 10MB, dataset too large
+disabled broadcast join in spark config
+switched to sort merge join, job completed successfully
+note: took 2x longer but stable

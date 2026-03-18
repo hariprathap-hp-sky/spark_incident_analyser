@@ -65,11 +65,11 @@ logger = logging.getLogger(__name__)
 
 _openai = OpenAI(api_key=cfg.openai.api_key)
 
-_qdrant = QdrantClient(
-    url=cfg.qdrant.url,
-    api_key=cfg.qdrant.api_key,
-    timeout=cfg.qdrant.timeout,
-)
+# Only pass api_key if it's set (avoid warning for local Docker without auth)
+_qdrant_kwargs = {"url": cfg.qdrant.url, "timeout": cfg.qdrant.timeout}
+if cfg.qdrant.api_key:
+    _qdrant_kwargs["api_key"] = cfg.qdrant.api_key
+_qdrant = QdrantClient(**_qdrant_kwargs)
 
 _tokenizer = tiktoken.get_encoding("cl100k_base")
 

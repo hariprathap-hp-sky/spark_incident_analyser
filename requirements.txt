@@ -8,6 +8,9 @@ tiktoken>=0.7.0          # Token counting for cost calculation
 # ── Vector database ───────────────────────────────────────────────────────────
 qdrant-client>=1.9.0     # Qdrant Cloud client
 
+# ── HTTP / SSL compatibility ──────────────────────────────────────────────────
+urllib3<2.0.0            # Pin to v1.x for LibreSSL compatibility on macOS
+
 # ── Database ──────────────────────────────────────────────────────────────────
 psycopg2-binary>=2.9.9   # PostgreSQL driver (binary = no build deps)
 

@@ -65,11 +65,11 @@ logger = logging.getLogger(__name__)
 
 _openai = OpenAI(api_key=cfg.openai.api_key)
 
-# Only pass api_key if it's set (avoid warning for local Docker without auth)
-_qdrant_kwargs = {"url": cfg.qdrant.url, "timeout": cfg.qdrant.timeout}
-if cfg.qdrant.api_key:
-    _qdrant_kwargs["api_key"] = cfg.qdrant.api_key
-_qdrant = QdrantClient(**_qdrant_kwargs)
+_qdrant = QdrantClient(
+    url=cfg.qdrant.url,
+    api_key=cfg.qdrant.api_key,
+    timeout=cfg.qdrant.timeout,
+)
 
 _tokenizer = tiktoken.get_encoding("cl100k_base")
 
@@ -178,14 +178,14 @@ def run_llm(query: str) -> dict[str, Any]:
     start_ms = time.time() * 1000
     metrics = QueryMetrics(query_length=len(query))
 
-    # ── 1. Query cache ────────────────────────────────────────────────────────
+    # ── 1. Query cache (exact match — fast path, no embedding needed) ────────
     cached_response = cache_manager.get_query(query)
     if cached_response is not None:
         metrics.path = "query_cache"
         metrics.query_cache_hit = True
         metrics.latency_ms = round(time.time() * 1000 - start_ms, 1)
         evaluator.log(metrics)
-        logger.info("Query cache HIT — returning instantly (%.1f ms)", metrics.latency_ms)
+        logger.info("Query cache HIT (exact) — returning instantly (%.1f ms)", metrics.latency_ms)
         return {**cached_response, "cache_hit": True, "latency_ms": metrics.latency_ms}
 
     # ── 2. Embedding (with cache) ─────────────────────────────────────────────
@@ -197,6 +197,17 @@ def run_llm(query: str) -> dict[str, Any]:
 
     metrics.embedding_tokens = embed_tokens
     metrics.embedding_cache_hit = embed_cached
+
+    # ── 2b. Query cache (semantic match — uses embedding similarity) ──────────
+    cached_response = cache_manager.get_query(query, query_embedding=embedding)
+    logger.info("Semantic cache result: %s", "HIT" if cached_response else "MISS")
+    if cached_response is not None:
+        metrics.path = "query_cache"
+        metrics.query_cache_hit = True
+        metrics.latency_ms = round(time.time() * 1000 - start_ms, 1)
+        evaluator.log(metrics)
+        logger.info("Query cache HIT (semantic) — returning (%.1f ms)", metrics.latency_ms)
+        return {**cached_response, "cache_hit": True, "latency_ms": metrics.latency_ms}
 
     # ── 3. Qdrant search ──────────────────────────────────────────────────────
     try:
@@ -269,6 +280,6 @@ def run_llm(query: str) -> dict[str, Any]:
         "debug": det.debug_info,
     }
 
-    # Store in query cache for the next identical query
-    cache_manager.set_query(query, response)
+    # Store in query cache with embedding for semantic matching
+    cache_manager.set_query(query, response, query_embedding=embedding)
     return response

@@ -56,7 +56,7 @@ class DatabaseConfig:
 @dataclass
 class AnalysisConfig:
     # Confidence >= threshold → skip LLM, return deterministic answer
-    confidence_threshold: float = 0.7
+    confidence_threshold: float = 0.85
     # Incidents with similarity this close = same cluster
     cluster_spread_threshold: float = 0.10
     # Minimum occurrences to flag as a recurring pattern
@@ -71,9 +71,20 @@ class AnalysisConfig:
 @dataclass
 class CacheConfig:
     cache_dir: str = ".cache"
-    query_ttl_seconds: int = 3600      # 1 hour  — exact query matches
+    query_ttl_seconds: int = 3600      # 1 hour  — query matches
     embedding_ttl_seconds: int = 86400  # 24 hours — embedding vectors
     llm_ttl_seconds: int = 1800         # 30 minutes — LLM responses
+
+    # Redis backend (set REDIS_URL to enable; falls back to in-memory + pickle)
+    redis_url: str = field(
+        default_factory=lambda: os.getenv("REDIS_URL", "")
+    )
+    redis_key_prefix: str = "spark_cache:"
+
+    # Semantic query matching — cosine similarity threshold for cache hits
+    # Queries with similarity >= this threshold are treated as "same question"
+    # text-embedding-3-small: natural rephrasings typically score 0.82–0.88
+    semantic_similarity_threshold: float = 0.82
 
 
 @dataclass

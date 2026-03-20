@@ -1,0 +1,29 @@
+
+Incident ID: INC4884880
+Date: 28/06/2025 
+Cluster: Spark-Cluster-A
+Application: NAP
+Short Description: ROI_Dingle (UKISS): Dingle port in for port id 78779 and msisdn 353876032416 has received a switch error
+Description:
+'
+	- Monitored Item: ROI_Dingle (UKISS) Attribute: V3 
+	  Status: Dingle port in for port id 78779 and msisdn 353876032416 has received a switch error
+'
+Resolution:
+'
+	- This port in has gone through now. So, closing the ticket. If there's any further issues, please raise a ticket and send to us.
+'
+
+Work Notes:
+'
+	- NAP external id f61fed35-b36f-4e47-92eb-5c821e8e4cd3
+	- Hi OCS team,
+
+	- Could you please have a look at the below number import failure.
+
+	- OldMSISDN: 353896579162
+	- NewMSISDN: 353876032416
+Error:
+
+	- [SKY_OCS_ACP.NETWORK_INVALID_RESPONSE] CPG-PROF-05000003_Error received from middleware_Invalid HTTP 	-	- Status/Response Received ","@baseType":null,"@schemaLocation":null,"@type":"reason"}],"orderItem":[],"orderRelationship":null,"relatedParty":null,"state":"failed"
+'

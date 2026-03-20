@@ -3,7 +3,6 @@ Date: 2024-03-27
 Cluster: Spark-Cluster-D
 Application: Data Validation
 Error Summary: Corrupted shuffle block detected
-Root Cause: Corrupt shuffle index files due to abrupt node termination.
 Resolution:
   - Enabled shuffle file replication.
   - Configured spark.cleaner.periodicGC.interval for cleanup.

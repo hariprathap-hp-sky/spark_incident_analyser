@@ -3,7 +3,6 @@ Date: 2024-02-20
 Cluster: Spark-Cluster-B
 Application: Streaming
 Error Summary: kafka lag alert firing. real-time dashboard showing stale data
-Root Cause: See work notes for details
 Resolution:
   - Parallelism from 10 to 30 partitions
 Key Learnings: Need proper lag monitoring setup

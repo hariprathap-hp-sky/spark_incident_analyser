@@ -1,0 +1,36 @@
+Incident ID: INC5327789
+Date: 2025-12-03
+Short Description: UK - Sky Mobile  - eSIM Activation
+Description: 
+    - Provisioning of new accounts and subscriber is failing as we some of the new numbers allocated to the new subscriber(recycled after 1 year Quarantine) are still present in the network. 
+    - A total of ~1200 activation provisioning message are in the rejected queue from yesterday. in the attempt to replay 100 of  them, only 20 succeeded.
+    - New provisioning are also likely to fail
+
+Resolution:
+  - The incident was identified as a continuation of the previous day's INC5326647. It was determined that only partial numbers had been removed earlier. To resolve this, the support team performed an LDAP cleanup in multiple batches. Afterward, replaying those numbers confirmed that there were no active errors during activation.
+
+- Work Notes:
+    - All identified numbers with leftover data in the OneNDS/SPS have now been cleaned up. These numbers have also been removed from quarantine and re‑added to the pool of available numbers to be used for provisioning. UserA and UserB have confirmed they are no longer seeing the previously identified errors. I think we can close this ticket assuming UserA and UserB have no objections.
+    - I believe this issue is still being worked on by Engineer1, Engineer2, and Engineer3.
+    -
+        Sent: 2025‑11‑24T07:54:32Z
+        From: noreply-system@placeholder.net
+        To: user01@example.com; user02@example.com; user03@example.com; user04@example.com; user05@example.com; ops.team@example.com; integration.team@example.com; user06@example.com; user07@example.com; user08@example.com; user09@example.com; user10@example.com; user11@example.com; user12@example.com; user13@example.com; user14@example.com; user15@example.com; user16@example.com; user17@example.com; user18@example.com; user19@example.com; user20@example.com; user21@example.com; user22@example.com; user23@example.com; user24@example.com; user25@example.com; user26@example.com; user27@example.com; user28@example.com
+        Subject: INC1234567 (P3) NAP: Provisioning of Activate Account and Subscriber failing has been assigned to your group
+        An incident has been assigned to the group UK Operations Tier‑1 to resolve.
+        Incident Details:
+        Number: INC5327789
+        Summary: NAP: Provisioning of Activate Account and Subscriber failing.
+        Description: Provisioning of new accounts and subscribers is failing because some of the new numbers allocated to the new subscriber (recycled after 1‑year quarantine) are still present in the network. A total of ~1200 activation provisioning messages are in the rejected queue since yesterday. In an attempt to replay 100 of them, only 20 succeeded. New provisioning requests are also likely to fail.
+        Priority: 3 – Moderate (Impact: 2 – High / Urgency: 3 – Medium).
+        Note: Replying to the notification email will append a Work Note to the ticket. The signature should not be included when replying. Worknote appended by automation.
+
+Impact Summary:
+    - On 24th November 2025, between 05:55 and 12:29 UK time, customers in the UK experienced failures when activating eSIMs. Approximately 25% of activations failed. Physical SIMs were also potentially impacted, although volumes remained low.
+
+Incident Management Summary:
+    - On 24th November 2025, Incident Management was made aware that incident INC1234567 involved widespread eSIM activation failures caused by residual configuration data from numbers that were not fully de‑provisioned during a major site outage in the previous year. These numbers, which should have been cleared after quarantine, re‑entered the provisioning pool and triggered repeated failures.
+    - The issue persisted as stuck MSISDNs were continuously selected during activation attempts, causing over 1,200 failed orders.
+    - The support team performed manual LDAP cleanups in batches, identified and removed problematic numbers from OneNDS/SPS, and restored them to the available number pool. Replays were executed after cleanup, significantly reducing errors.
+    - Root cause was traced to incomplete cease operations during the previous outage, and resolution required extensive manual intervention and coordination across teams.
+    - Monitoring continues to ensure stability.

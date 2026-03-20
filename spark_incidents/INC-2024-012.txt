@@ -3,7 +3,6 @@ Date: 2024-03-26
 Cluster: Spark-Cluster-A
 Application: Model Training
 Error Summary: SparkContext terminated unexpectedly
-Root Cause: Cluster resource preemption by higher-priority jobs.
 Resolution:
   - Added fair scheduler weights to prevent starvation.
   - Reserved dedicated queue for latency-critical jobs.

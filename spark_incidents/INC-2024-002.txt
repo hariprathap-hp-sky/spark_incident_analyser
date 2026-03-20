@@ -3,7 +3,6 @@ Date: 2024-01-20
 Cluster: Spark-Cluster-B
 Application: ML Training
 Error Summary: ML training job killed. urgent!! needed for release tomorrow
-Root Cause: See work notes for details
 Resolution:
   - To sort merge join, job completed successfully
 Key Learnings: Took 2x longer but stable

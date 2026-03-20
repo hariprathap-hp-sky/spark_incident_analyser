@@ -3,7 +3,6 @@ Date: 2024-03-28
 Cluster: Spark-Cluster-A
 Application: Data Validation
 Error Summary: Network timeout during shuffle fetch
-Root Cause: Network congestion between worker and shuffle service.
 Resolution:
   - Increased network timeout and enabled retry mechanism.
   - Validated connectivity using netstat and iostat metrics.

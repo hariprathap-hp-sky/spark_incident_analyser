@@ -3,7 +3,6 @@ Date: 2024-02-01
 Cluster: Spark-Cluster-A
 Application: ETL Job
 Error Summary: ETL stuck since last night. morning batch not completed. business impact high
-Root Cause: See work notes for details
 Resolution:
   - Tom 11:00am - implemented salting on join key
   - Lesson: enable aqe by default!

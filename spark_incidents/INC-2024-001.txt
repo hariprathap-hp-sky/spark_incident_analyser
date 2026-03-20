@@ -3,7 +3,6 @@ Date: 2024-01-15
 Cluster: Spark-Cluster-A
 Application: Data Pipeline
 Error Summary: job failing intermittently. users complaining data not loading. started around 10am
-Root Cause: Was data skew in user_events table, one partition had 10x more data
 Resolution:
   - Executor memory from 4g to 8g
 Key Learnings: Review work notes for learnings

@@ -56,7 +56,7 @@ class DatabaseConfig:
 @dataclass
 class AnalysisConfig:
     # Confidence >= threshold → skip LLM, return deterministic answer
-    confidence_threshold: float = 0.85
+    confidence_threshold: float = 0.7
     # Incidents with similarity this close = same cluster
     cluster_spread_threshold: float = 0.10
     # Minimum occurrences to flag as a recurring pattern
@@ -85,6 +85,12 @@ class CacheConfig:
     # Queries with similarity >= this threshold are treated as "same question"
     # text-embedding-3-small: natural rephrasings typically score 0.82–0.88
     semantic_similarity_threshold: float = 0.82
+
+    # Targeted cache invalidation on ingestion — evict cached queries whose
+    # embedding is similar to a newly ingested incident (instead of clearing all).
+    # Lower than semantic_similarity_threshold because we're comparing a query
+    # embedding against an incident embedding (different text types).
+    invalidation_similarity_threshold: float = 0.80
 
 
 @dataclass

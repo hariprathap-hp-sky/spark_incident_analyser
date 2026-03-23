@@ -42,23 +42,51 @@ def chunk_text(text: str, chunk_size=800, overlap=100):
 def ingest_incidents():
     print("🚀 Loading Spark incident reports...")
 
-    # Create collection
-    qdrant.recreate_collection(
-        collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(
-            size=VECTOR_SIZE,
-            distance=Distance.COSINE
+    # Create collection only if it doesn't exist
+    if not qdrant.collection_exists(COLLECTION_NAME):
+        qdrant.create_collection(
+            collection_name=COLLECTION_NAME,
+            vectors_config=VectorParams(
+                size=VECTOR_SIZE,
+                distance=Distance.COSINE
+            )
         )
-    )
-    print(f"✅ Collection '{COLLECTION_NAME}' created")
+        print(f"✅ Collection '{COLLECTION_NAME}' created")
+    else:
+        print(f"ℹ️  Collection '{COLLECTION_NAME}' already exists, skipping creation")
+
+    # Get list of already ingested files
+    existing_files = set()
+    if qdrant.collection_exists(COLLECTION_NAME):
+        # Scroll through all points and collect unique source filenames
+        scroll_result = qdrant.scroll(
+            collection_name=COLLECTION_NAME,
+            limit=1000,  # Adjust if you have more than 1000 chunks
+            with_payload=True,
+            with_vectors=False
+        )
+        for point in scroll_result[0]:
+            if point.payload and "source" in point.payload:
+                existing_files.add(point.payload["source"])
+    
+    if existing_files:
+        print(f"📋 Found {len(existing_files)} already ingested files")
 
     # Load txt files
     incident_dir = Path("spark_incidents")
     files = list(incident_dir.glob("*.txt"))
-    print(f"📄 Found {len(files)} incident files")
+    
+    # Filter out already ingested files
+    new_files = [f for f in files if f.name not in existing_files]
+    
+    if not new_files:
+        print(f"✅ All {len(files)} files already ingested, nothing to do!")
+        return
+    
+    print(f"📄 Found {len(new_files)} new incident files to ingest (out of {len(files)} total)")
 
     points = []
-    for file in files:
+    for file in new_files:
         text = file.read_text(encoding="utf-8")
         chunks = chunk_text(text)
 

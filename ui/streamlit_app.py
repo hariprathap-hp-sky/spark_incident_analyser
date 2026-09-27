@@ -9,11 +9,11 @@ import logging
 
 import streamlit as st
 
-from backend.cache_manager import cache_manager
-from backend.config import cfg
-from backend.core_qdrant import run_llm
-from backend.evaluator import evaluator
-from backend.feedback_manager import feedback_manager
+from app.cache.cache_manager import cache_manager
+from app.config import cfg
+from app.retrieval.qdrant_client import run_llm
+from app.analysis.evaluator import evaluator
+from app.feedback.feedback_manager import feedback_manager
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -42,7 +42,8 @@ def _path_badge(path: str) -> str:
     badges = {
         "deterministic": "🟢 Deterministic (no LLM)",
         "llm": "🟡 LLM (GPT-4o-mini)",
-        "query_cache": "⚡ Query Cache Hit",
+        "query_cache_exact": "⚡ Query Cache (exact match)",
+        "query_cache_semantic": "💫 Query Cache (semantic match)",
     }
     return badges.get(path, path)
 
@@ -180,13 +181,10 @@ for i, item in enumerate(st.session_state.chat_history):
         if sources:
             with st.expander(f"📄 {len(sources)} source incident(s)"):
                 for r in sources[:5]:
-                    inc_id = r.payload.get("incident_id", "?")
-                    cluster = r.payload.get("cluster", "?")
-                    st.write(
-                        f"**{inc_id}** — {cluster} — similarity `{r.score:.3f}`"
-                    )
-                    st.caption(r.payload.get("text", "")[:300] + "…")
-                    st.divider()
+                    inc_id = r["payload"].get("incident_id", "?")
+                    cluster = r["payload"].get("cluster", "?")
+                    st.caption(f"**{inc_id}** — {cluster} — similarity `{r['score']:.3f}`")
+                    st.caption(r["payload"].get("text", "")[:300] + "…")
 
         # Feedback buttons
         if i not in st.session_state.feedback_given:
@@ -275,13 +273,10 @@ if prompt:
         if sources:
             with st.expander(f"📄 {len(sources)} source incident(s)"):
                 for r in sources[:5]:
-                    inc_id = r.payload.get("incident_id", "?")
-                    cluster = r.payload.get("cluster", "?")
-                    st.write(
-                        f"**{inc_id}** — {cluster} — similarity `{r.score:.3f}`"
-                    )
-                    st.caption(r.payload.get("text", "")[:300] + "…")
-                    st.divider()
+                    inc_id = r["payload"].get("incident_id", "?")
+                    cluster = r["payload"].get("cluster", "?")
+                    st.caption(f"**{inc_id}** — {cluster} — similarity `{r['score']:.3f}`")
+                    st.caption(r["payload"].get("text", "")[:300] + "…")
 
     # Store in history
     st.session_state.chat_history.append({"query": prompt, "response": resp})

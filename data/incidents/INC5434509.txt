@@ -1,0 +1,18 @@
+number: INC5434509
+incident_state: Closed
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: Acc 623630936705
+description: Replacement SIM Rejection / Failed to access live account usage red banner on portfolio Can this please be looked at, customer has no service & sim not billing Number : 07854890728 - Failed Reason: Failed : Max Retry Limit Reached Service ID : 56314352
+comments: 02/02/2026 14:01:24 - Shyam Sundar G S (Additional comments) --Resolution Details--: Hi Gordina, We are already tracking this issue under INC5457965. Closing this ticket to avoid confusion. Hope it makes sense! Thanks!
+work_notes: 18/02/2026 01:14:42 - System Scheduler (Work notes) Incident automatically closed after 15 days in the Resolved state. 06/01/2026 15:42:01 - Alison Wilson (Work notes) Link new sim failed This was tried on 05/01 Error Order rejected (code: THIRD_PARTY_TECHNICAL_FAILURE, reason: Third party technical failure.)
+u_impact_summary: 
+u_incident_management_summary: Replacement SIM Rejection / Failed to access live account usage red banner on portfolio Can this please be looked at, customer has no service & sim not billing Number : 07854890728 - Failed Reason: Failed : Max Retry Limit Reached Service ID : 56314352
+u_incident_trigger: 
+close_code: Resolved - Under monitoring
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

@@ -12,7 +12,7 @@ from datetime import datetime
 
 import psycopg2
 
-from backend.config import cfg
+from app.config import cfg
 
 logger = logging.getLogger(__name__)
 

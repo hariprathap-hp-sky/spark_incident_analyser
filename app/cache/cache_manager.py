@@ -37,7 +37,7 @@ from typing import Any, Optional
 
 import numpy as np
 
-from backend.config import cfg
+from app.config import cfg
 
 logger = logging.getLogger(__name__)
 

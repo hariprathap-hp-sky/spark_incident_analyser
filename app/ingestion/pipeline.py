@@ -27,8 +27,8 @@ from openai import OpenAI
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
-from backend.cache_manager import cache_manager
-from backend.config import cfg
+from app.cache.cache_manager import cache_manager
+from app.config import cfg
 
 logger = logging.getLogger(__name__)
 

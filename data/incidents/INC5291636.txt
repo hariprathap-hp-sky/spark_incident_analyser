@@ -1,0 +1,18 @@
+number: INC5291636
+incident_state: Closed
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: Missing Voicemail configuration for Customers activated/ported in on 05/08/2025
+description: We've identified an issue with Voicemail services affecting Mobile UK customers who were activated or ported into the Sky network on 05/08/2025—the date when the migration to provision UK customers via the next-gen VSL platform (CHG1418005) took place. Initially, the issue appeared to impact customers activated between 7:00 AM and 8:00 AM. However, we are now observing similar problems with activations at 10:00 AM, 11:00 AM, and even 12:00 AM. Currently, we are relying on the Streamwide engineer to apply manual fixes on a case-by-case basis. To proactively address this, it would be more efficient to identify all numbers activated on that date and apply a bulk fix, preventing customers from encountering the issue and raising complaints.
+comments: 06/02/2026 13:00:14 - Shyam Sundar G S (Additional comments) --Resolution Details--: As mentioned in the INC, this issue was only related to the customers that were activated on 5th August, 2025, the day the migration to next gen VSL was done. What was done: The list of numbers that were activated on the particular day was received from TechOps. A check was done from NAP side to get the list of active subscribers from the list shared by TechOps. The final list was shared with Streamwide. Following that the volume of numbers without Streamwide configuration has been reduced. We are getting less incidents.
+work_notes: 15/02/2026 01:06:52 - System Scheduler (Work notes) Incident automatically closed after 8 days in the Resolved state.
+u_impact_summary: 
+u_incident_management_summary: We've identified an issue with Voicemail services affecting customers who were activated or ported into the Sky network on 05/08/2025—the date when the migration to provision UK customers via the next-gen VSL platform (CHG1418005) took place. Initially, the issue appeared to impact customers activated between 7:00 AM and 8:00 AM. However, we are now observing similar problems with activations at 10:00 AM, 11:00 AM, and even 12:00 AM. Currently, we are relying on the Streamwide engineer to apply manual fixes on a case-by-case basis. To proactively address this, it would be more efficient to identify all numbers activated on that date and apply a bulk fix, preventing customers from encountering the issue and raising complaints.
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

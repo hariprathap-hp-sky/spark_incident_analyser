@@ -36,7 +36,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from backend.config import cfg
+from app.config import cfg
 
 logger = logging.getLogger(__name__)
 
@@ -120,8 +120,10 @@ class Evaluator:
             path_counts[m.path] = path_counts.get(m.path, 0) + 1
 
         n = len(metrics)
-        llm_avoided = path_counts.get("deterministic", 0) + path_counts.get(
-            "query_cache", 0
+        llm_avoided = (
+            path_counts.get("deterministic", 0) 
+            + path_counts.get("query_cache_exact", 0)
+            + path_counts.get("query_cache_semantic", 0)
         )
 
         return {

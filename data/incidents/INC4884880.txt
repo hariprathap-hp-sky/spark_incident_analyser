@@ -1,0 +1,18 @@
+number: INC4884880
+incident_state: Closed
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: Certificate expiring CRT0026589 - SkyUKprod.NapUK. Services affected: Not documented
+description: The following certificate will expire in 30 days. Please resolve this by renewing/replacing the certificate. Failure to do so may result in a service impact: Certificate: CRT0026589 - SkyUKprod.NapUK Common Name: SkyUKprod.NapUK Services: Not documented Expiry Date: 2025-07-01 Owner Group: UK Network Abstraction Platform (NAP) Design Business Owner: Vijay Hirani, Stephen Middleditch, Nirmal Sidhu, Fabrice Nzena Pousseu, David Mackay, Jim Madar, Zipporah Mayik, Harsh Kumar Originally requested for: undefined The certificate record in Spark can be found here: https://sky.service-now.com/nav_to.do?uri=u_cmdb_ci_certificate.do?sys_id=011fb322fb43c2507119fbb1beefdc65 To renew/replace please go to the following request: https://sky.service-now.com/techss?id=tss_cat_item&sys_id=d0bd18cd0fc5f740ac081b2be1050e27
+comments: 19/06/2025 09:09:00 - Shyam Sundar G S (Additional comments) --Resolution Details--: New certificate has been generated and successfully implemented in the production environment. Change number: CHG1358272
+work_notes: 28/06/2025 00:00:10 - System Scheduler (Work notes) Incident automatically closed after 8 days in the Resolved state.
+u_impact_summary: 
+u_incident_management_summary: The following certificate will expire in 30 days. Please resolve this by renewing/replacing the certificate. Failure to do so may result in a service impact: Certificate: CRT0026589 - SkyUKprod.NapUK Common Name: SkyUKprod.NapUK Services: Not documented Expiry Date: 2025-07-01 Owner Group: UK Network Abstraction Platform (NAP) Design Business Owner: Vijay Hirani, Stephen Middleditch, Nirmal Sidhu, Fabrice Nzena Pousseu, David Mackay, Jim Madar, Zipporah Mayik, Harsh Kumar Originally requested for: undefined The certificate record in Spark can be found here: https://sky.service-now.com/nav_to.do?uri=u_cmdb_ci_certificate.do?sys_id=011fb322fb43c2507119fbb1beefdc65 To renew/replace please go to the following request: https://sky.service-now.com/techss?id=tss_cat_item&sys_id=d0bd18cd0fc5f740ac081b2be1050e27
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: Yes - Planned
+caused_by: {'display_value': 'CHG1358272', 'link': 'https://sky.service-now.com/api/now/table/change_request/cf0705ae83462ed0950e7cf16daad34a'}
+resolution_action: None
+resolution_detail: None

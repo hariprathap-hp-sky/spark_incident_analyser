@@ -1,0 +1,18 @@
+number: INC5146456
+incident_state: Resolved
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: NAP: Streamwide Plugin Error
+description: NAP is currently receiving intermittent plugin errors from Streamwide. The error message seen in the logs is "Failed to invoke plugin [voice]. This impacts all provisioning going to Streamwide like activate_subscriber, activate_account, cease_subscriber, number_import, number_port_out and number_port_out_cease. This is because of some heap issues in the Streamwide pods. As things stand, the temporary fix is to restart the pods in that particular site which will fix the issue. But the issue comes back again after a week or so. Amdocs are working on a permanent solution to fix this. We will keep this incident open to track the updates regarding the fix.
+comments: 17/03/2026 07:42:30 - Kumar (Additional comments) --Resolution Details--: Fix is delivered
+work_notes: 30/10/2025 09:20:18 - Kumar (Work notes) This issue is occurring because , earlier, the Streamwide interface used a static URL, for example: https://10.245.176.6:8083/swums_rpc/server.php However, after the VSL migration, the connectivity URLs became dynamic, such as: https://10.57.34.58:8443/vmsxml/xmlprofile.php/{MSISDN} Because of this change, each time NAP receives a provisioning request for Streamwide, a new connection pool instance gets created - since the MSISDN value is appended to the URL. As a result, NAP treats each request as a new connection, leading to multiple pool creations and faster memory utilization. To address this, I’ve implemented a code fix where the MSISDN portion is trimmed from the URL before establishing the connection. This ensures that the connection URL remains static for NAP, resulting in a single, limited connection pool. For all other operations, the full URL (including MSISDN) is still used as expected. And a change raised for the same . Change no -- to track . CHG1526938
+u_impact_summary: 
+u_incident_management_summary: NAP is currently receiving intermittent plugin errors from Streamwide. The error message seen in the logs is "Failed to invoke plugin [voice]. This impacts all provisioning going to Streamwide like activate_subscriber, activate_account, cease_subscriber, number_import, number_port_out and number_port_out_cease. This is because of some heap issues in the Streamwide pods. As things stand, the temporary fix is to restart the pods in that particular site which will fix the issue. But the issue comes back again after a week or so. Amdocs are working on a permanent solution to fix this. We will keep this incident open to track the updates regarding the fix.
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

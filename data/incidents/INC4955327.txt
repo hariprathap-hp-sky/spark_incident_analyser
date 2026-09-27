@@ -1,0 +1,18 @@
+number: INC4955327
+incident_state: Closed
+urgency: 4 - Low
+impact: 4 - Low
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: ROI_Dingle (UKISS): Dingle port in for port id 78779 and msisdn 353876032416 has received a switch error
+description: Monitored Item: ROI_Dingle (UKISS) Attribute: V3 Status: Dingle port in for port id 78779 and msisdn 353876032416 has received a switch error
+comments: 08/07/2025 13:52:18 - Shyam Sundar G S (Additional comments) --Resolution Details--: This port in has gone through now. So, closing the ticket. If there's any further issues, please raise a ticket and send to us.
+work_notes: 17/07/2025 00:01:05 - System Scheduler (Work notes) Incident automatically closed after 8 days in the Resolved state. 08/07/2025 10:09:04 - Karthika Natarajan (Work notes) Please check now. 01/07/2025 12:43:16 - Shyam Sundar G S (Work notes) Hi OCS team, Could you please have a look at the below number import failure. OldMSISDN: 353896579162 NewMSISDN: 353876032416 Error: [SKY_OCS_ACP.NETWORK_INVALID_RESPONSE] CPG-PROF-05000003_Error received from middleware_Invalid HTTP Status/Response Received ","@baseType":null,"@schemaLocation":null,"@type":"reason"}],"orderItem":[],"orderRelationship":null,"relatedParty":null,"state":"failed" 01/07/2025 10:25:36 - Kalpesh Amin (Work notes) NAP external id f61fed35-b36f-4e47-92eb-5c821e8e4cd3
+u_impact_summary: 
+u_incident_management_summary: Monitored Item: ROI_Dingle (UKISS) Attribute: V3 Status: Dingle port in for port id 78779 and msisdn 353876032416 has received a switch error
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

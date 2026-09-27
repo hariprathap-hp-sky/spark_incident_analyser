@@ -54,10 +54,10 @@ import tiktoken
 from openai import OpenAI
 from qdrant_client import QdrantClient
 
-from backend.cache_manager import cache_manager
-from backend.config import cfg
-from backend.deterministic_analyzer import analyze
-from backend.evaluator import QueryMetrics, evaluator
+from app.cache.cache_manager import cache_manager
+from app.config import cfg
+from app.analysis.deterministic import analyze
+from app.analysis.evaluator import QueryMetrics, evaluator
 
 logger = logging.getLogger(__name__)
 
@@ -97,12 +97,12 @@ End your response with:
   "Refer to the source incident(s) listed above for detailed
   work notes and full resolution history."
 
-If the context does not contain enough information, say so explicitly.
+If the context lacks specific details, provide general troubleshooting steps while explicitly noting: 
+"⚠️ Based on general knowledge (not from your incident history)."
 """
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-
 
 def _count_tokens(text: str) -> int:
     return len(_tokenizer.encode(text))
@@ -130,14 +130,15 @@ def get_embedding(text: str) -> tuple[list[float], int, bool]:
     return embedding, tokens, False
 
 
-def search_incidents(query_embedding: list[float], k: Optional[int] = None) -> list:
-    """Return top-k ScoredPoint results from Qdrant."""
+def search_incidents(query_embedding: list[float], k: Optional[int] = None) -> list[dict]:
+    """Return top-k search results from Qdrant as plain dicts (score + payload)."""
     k = k or cfg.qdrant.search_limit
-    return _qdrant.query_points(
+    points = _qdrant.query_points(
         collection_name=cfg.qdrant.collection_name,
         query=query_embedding,
         limit=k,
     ).points
+    return [{"score": p.score, "payload": p.payload, "id": p.id} for p in points]
 
 
 def _call_llm(query: str, context: str) -> tuple[str, int, int, bool]:
@@ -196,7 +197,7 @@ def run_llm(query: str) -> dict[str, Any]:
     # ── 1. Query cache (exact match — fast path, no embedding needed) ────────
     cached_response = cache_manager.get_query(query)
     if cached_response is not None:
-        metrics.path = "query_cache"
+        metrics.path = "query_cache_exact"
         metrics.query_cache_hit = True
         metrics.latency_ms = round(time.time() * 1000 - start_ms, 1)
         evaluator.log(metrics)
@@ -205,20 +206,25 @@ def run_llm(query: str) -> dict[str, Any]:
         return {**cached_response, "cache_hit": True, "latency_ms": metrics.latency_ms, "cache_similarity": sim}
 
     # ── 2. Embedding (with cache) ─────────────────────────────────────────────
+    t0 = time.time()
     try:
         embedding, embed_tokens, embed_cached = get_embedding(query)
     except Exception as exc:
         logger.error("Embedding failed: %s", exc)
         raise
-
+    t1 = time.time()    
+    logger.info("TIMING: get_embedding took %.1fms (cache_hit=%s)", (t1 - t0) * 1000, embed_cached)
     metrics.embedding_tokens = embed_tokens
     metrics.embedding_cache_hit = embed_cached
 
     # ── 2b. Query cache (semantic match — uses embedding similarity) ──────────
+    t2 = time.time()
     cached_response = cache_manager.get_query(query, query_embedding=embedding)
+    t3 = time.time()
+    logger.info("TIMING: get_query (semantic scan) took %.1fms", (t3 - t2) * 1000)
     logger.info("Semantic cache result: %s", "HIT" if cached_response else "MISS")
     if cached_response is not None:
-        metrics.path = "query_cache"
+        metrics.path = "query_cache_semantic"
         metrics.query_cache_hit = True
         metrics.latency_ms = round(time.time() * 1000 - start_ms, 1)
         evaluator.log(metrics)
@@ -252,7 +258,7 @@ def run_llm(query: str) -> dict[str, Any]:
     else:
         # Low confidence → build context and call LLM (or hit LLM cache)
         context = "\n\n---\n\n".join(
-            f"Incident:\n{r.payload.get('text', '')}" for r in search_results[:5]
+            f"Incident:\n{r['payload'].get('text', '')}" for r in search_results[:5]
         )
         try:
             llm_answer, in_tok, out_tok, llm_cached = _call_llm(query, context)

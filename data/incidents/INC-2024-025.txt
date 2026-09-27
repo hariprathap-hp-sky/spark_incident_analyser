@@ -1,0 +1,17 @@
+Incident ID: INC-2024-025
+
+Date: 2024-03-26
+
+Cluster: Spark-Cluster-D
+
+Application: Data Validation
+
+Error Summary: Spark Job failure due to java.lang.OutOfMemoryError: GC overhead limit exceeded
+
+Resolution:
+
+Root Cause identified: Memory leak in the custom UDF (User Defined Function) responsible for date parsing.
+
+Permanent Fix: Optimized the UDF code to reuse object references and increased spark.executor.memory from 4G to 8G.
+
+Validation: Verified heap usage remains stable under 70% during peak load after the code change.

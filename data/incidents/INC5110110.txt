@@ -1,0 +1,18 @@
+number: INC5110110
+incident_state: Closed
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: 625093242810 - Exception: Rejected
+description: Hi, SIM is showing as Exception: Rejected, customer has advised that the SIM doesn't have service. Can this please be looked into? SIM Plan: Craigbob - 10GB Mobile Number: 07709756249 Error Code: Replacement sim- Unknown error
+comments: 03/09/2025 10:11:33 - Shyam Sundar G S (Additional comments) --Resolution Details--: This has been fixed and the subsequent SIM swap has gone through successfully now. 02/09/2025 10:09:28 - Vijay Hirani (Additional comments) Checked the Logs, can see the Sim Swap entry for today. But I can see that it failed on 27/08/2025 at 16:23 as data is incomplete in the OCS platform. the current setting in the other network platforms is MSISDN "447709756249" and "IMSI" : "234570012613417", need to swap the the new IMSI. checking with the OCS team 02/09/2025 07:12:57 - Yazhini Balasaravanan (Additional comments) Please check the below sim service, this is in inprogress on retry., MSISDN - 447709756249 and retired on 02/09/2025 08:08.
+work_notes: 12/09/2025 00:00:44 - System Scheduler (Work notes) Incident automatically closed after 8 days in the Resolved state. 03/09/2025 10:10:49 - Shyam Sundar G S (Work notes) Hi Guys, This has been fixed in the OCS and the subsequent SIM swap has gone through successfully now. I've confirmed the same with Alison from CRM team. Thanks!
+u_impact_summary: 
+u_incident_management_summary: Hi, SIM is showing as Exception: Rejected, customer has advised that the SIM doesn't have service. Can this please be looked into? SIM Plan: Craigbob - 10GB Mobile Number: 07709756249 Error Code: Replacement sim- Unknown error
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

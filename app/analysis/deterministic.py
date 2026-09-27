@@ -28,7 +28,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Optional
 
-from backend.config import cfg
+from app.config import cfg
 
 logger = logging.getLogger(__name__)
 
@@ -131,19 +131,19 @@ def _detect_clusters(search_results: list) -> list[IncidentCluster]:
     """Group results by root-cause theme; sort by avg similarity descending."""
     groups: dict[str, list] = {}
     for r in search_results:
-        text = r.payload.get("text", "")
+        text = r["payload"].get("text", "")
         theme = _classify_root_cause(text)
         groups.setdefault(theme, []).append(r)
 
     clusters: list[IncidentCluster] = []
     for theme, results in groups.items():
-        best = max(results, key=lambda r: r.score)
-        best_text = best.payload.get("text", "")
+        best = max(results, key=lambda r: r["score"])
+        best_text = best["payload"].get("text", "")
         clusters.append(
             IncidentCluster(
                 theme=theme,
-                incident_ids=[r.payload.get("incident_id", "?") for r in results],
-                similarity_scores=[r.score for r in results],
+                incident_ids=[r["payload"].get("incident_id", "?") for r in results],
+                similarity_scores=[r["score"] for r in results],
                 common_root_cause=_extract_field(best_text, "Root Cause")
                 or _classify_root_cause(best_text),
                 common_resolution=_extract_resolution(best_text),
@@ -157,7 +157,7 @@ def _detect_recurrence(search_results: list) -> list[str]:
     """Return root-cause themes seen ≥ min_recurrence_count times."""
     counts: dict[str, int] = {}
     for r in search_results:
-        theme = _classify_root_cause(r.payload.get("text", ""))
+        theme = _classify_root_cause(r["payload"].get("text", ""))
         counts[theme] = counts.get(theme, 0) + 1
 
     threshold = cfg.analysis.min_recurrence_count
@@ -210,7 +210,7 @@ def _build_deterministic_answer(
     recurring: list[str],
     confidence: float,
 ) -> str:
-    top_sim = round(search_results[0].score, 3) if search_results else 0.0
+    top_sim = round(search_results[0]["score"], 3) if search_results else 0.0
     primary = clusters[0] if clusters else None
 
     lines: list[str] = [
@@ -253,11 +253,11 @@ def _build_deterministic_answer(
 
     lines.append("**Similar Incidents Retrieved:**")
     for r in search_results[:5]:
-        inc_id = r.payload.get("incident_id", "?")
-        cluster = r.payload.get("cluster", "?")
-        theme = _classify_root_cause(r.payload.get("text", ""))
+        inc_id = r["payload"].get("incident_id", "?")
+        cluster = r["payload"].get("cluster", "?")
+        theme = _classify_root_cause(r["payload"].get("text", ""))
         lines.append(
-            f"- **{inc_id}** — similarity `{r.score:.3f}` | cluster: {cluster} | theme: {theme}"
+            f"- **{inc_id}** — similarity `{r['score']:.3f}` | cluster: {cluster} | theme: {theme}"
         )
 
     lines += [
@@ -298,7 +298,7 @@ def analyze(query: str, search_results: list) -> DeterministicResult:
             path="llm_required",
         )
 
-    scores = [r.score for r in search_results]
+    scores = [r["score"] for r in search_results]
     clusters = _detect_clusters(search_results)
     recurring = _detect_recurrence(search_results)
     confidence = _calculate_confidence(scores, clusters, recurring)

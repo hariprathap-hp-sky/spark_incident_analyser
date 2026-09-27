@@ -86,7 +86,7 @@ User Query
                        │
           ┌────────────┴────────────┐
           │                         │
-   confidence ≥ 0.70         confidence < 0.70
+   confidence ≥ 0.85        confidence < 0.85
           │                         │
           ▼                         ▼
    Structured Markdown        LLM Cache check
@@ -237,3 +237,39 @@ For production, run Streamlit behind a reverse proxy (nginx or Caddy) with authe
 - **Phase 1** ✅ — Basic RAG: PostgreSQL → Qdrant → GPT-4-turbo → Streamlit
 - **Phase 2** ✅ — Pattern matching + caching + cost tracking + evaluator + feedback
 - **Phase 3** — Hybrid search (keyword + semantic), reranking, Spark History Server integration
+
+### Phase 3: Hybrid Search & Reranking
+
+**Problem:** Semantic search misses exact keyword matches (error codes, incident IDs)
+
+**Solution:** Three-stage retrieval pipeline
+
+#### 1. Hybrid Search (Semantic + Keyword)
+```
+Query → [Vector Search] + [BM25 Full-Text] → Reciprocal Rank Fusion → Top-10
+```
+- **Semantic path:** Qdrant vector search (cosine similarity)
+- **Keyword path:** BM25 scoring for exact matches
+- **Fusion:** RRF combines results, prioritizes documents appearing in both
+- **Benefit:** Catches technical terms, IDs, error codes semantic search misses
+
+#### 2. Cross-Encoder Reranking
+- Model: `ms-marco-MiniLM-L-6-v2` (runs locally)
+- Re-scores top-10 holistically: evaluates full (query, document) pairs
+- Performance: +8–12% nDCG@5, +50–100ms latency
+- Applied to: AI-assisted queries only (pattern-matched already precise)
+
+#### 3. Spark History Server Integration
+- Fetch real-time metrics from `/api/v1/applications/{appId}`
+- Enrich incidents with: executor memory, shuffle bytes, GC time, stage failures
+- Example enrichment: *"Job failed"* → *"Job failed. GC overhead 45%, shuffle read 1.2TB"*
+- Pattern matcher detects performance issues from metrics, not just descriptions
+
+**Expected Impact:**
+
+| Metric | Current (Phase 2) | Target (Phase 3) |
+|--------|-------------------|------------------|
+| Precision@5 | ~80% | ≥ 90% |
+| Recall (exact-match queries) | ~60% | ≥ 95% |
+| Latency (p95) | 600ms | < 800ms |
+| Thumbs-up rate | 78% | ≥ 85% |

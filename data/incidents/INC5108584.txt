@@ -1,0 +1,18 @@
+number: INC5108584
+incident_state: Closed
+urgency: 3 - Medium
+impact: 3 - Medium
+assignment_group_display_value: None
+assigned_to_display_value: None
+short_description: Ernest Provide Failing - with [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] [TYPE:Error][Error 4150] The Group already exists.
+description: We have the following five orders that are failing with the error message ORDER_ID DIRECTORY_NUMBER 171209180 1613072498 171285551 1202053014 171116939 1619153373 171214016 1908462030 171925904 1284625196 com.amdocs.oss.aua.shared.exception.common.InvalidResponseException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] com.amdocs.oss.aua.activation.adapter.plugin.exception.PluginInvocationFailedException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] com.amdocs.oss.aua.driver.broadworks.exception.BroadworksErrorResponseException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] [TYPE:Error][Error 4150] The Group already exists, please use a unique Group ID. This issue has been going on for over a year now - INC4189176, INC4234117. Please take another look into these and progress.
+comments: 27/11/2025 13:54:17 - Rupesh Solanki (Additional comments) --Resolution Details--: resolving spark, issues has been corrected
+work_notes: 06/12/2025 01:15:59 - System Scheduler (Work notes) Incident automatically closed after 8 days in the Resolved state. 13/11/2025 13:38:12 - Shyam Sundar G S (Work notes) Hi Viraj, The faulty configuration in BW has been fixed by firing requests from the NAP. Ibrahim has also made the changes to the order structure which was wrong and has replayed all the orders successfully. Thanks to everyone who were associated in getting these fixed. Regards, Shyam Sundar G S 14/10/2025 13:28:49 - Viraj Nagawa (Work notes) Hi Shyam, The group ids are associated with enterprised id 3000035 but these accounts have no voice service. They were all provisioned with both a Data and VoIP orders. Therefore it would be fine to cease the group IDs so that the voice orders can be progressed. 14/10/2025 13:12:29 - Shyam Sundar G S (Work notes) Hi Viraj, can you please give a confirmation that the following groupID's are not active under their respective Enterprise ID's? Group ID Enterprise ID 300000021780 3000035 300000021998 3000035 300000021257 300000021257 300000021225 3000035 300000021646 3000035 05/09/2025 07:54:33 - Ibrahim Bah (Work notes) Hi, Can we have an update? please
+u_impact_summary: 
+u_incident_management_summary: We have the following five orders that are failing with the error message ORDER_ID DIRECTORY_NUMBER 171209180 1613072498 171285551 1202053014 171116939 1619153373 171214016 1908462030 171925904 1284625196 com.amdocs.oss.aua.shared.exception.common.InvalidResponseException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] com.amdocs.oss.aua.activation.adapter.plugin.exception.PluginInvocationFailedException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] com.amdocs.oss.aua.driver.broadworks.exception.BroadworksErrorResponseException: [DRIVER_BROADWORKS.BROADWORKS_ERROR_RESPONSE] [TYPE:Error][Error 4150] The Group already exists, please use a unique Group ID. This issue has been going on for over a year now - INC4189176, INC4234117. Please take another look into these and progress.
+u_incident_trigger: 
+close_code: Resolved - No further action
+u_caused_by_change: No
+caused_by: 
+resolution_action: None
+resolution_detail: None

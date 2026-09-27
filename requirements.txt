@@ -25,3 +25,5 @@ streamlit>=1.35.0        # Chat UI
 
 # ── Config / environment ──────────────────────────────────────────────────────
 python-dotenv>=1.0.0     # .env file loading
+
+pandas

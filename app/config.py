@@ -46,9 +46,9 @@ class QdrantConfig:
 
 @dataclass
 class DatabaseConfig:
-    host: str = "localhost"
-    port: int = 5432
-    name: str = "spark_incidents"
+    host: str = field(default_factory=lambda: os.getenv("DB_HOST", "localhost"))
+    port: int = field(default_factory=lambda: int(os.getenv("DB_PORT", "5432")))
+    name: str = field(default_factory=lambda: os.getenv("DB_NAME", "spark_incidents"))
     user: str = field(default_factory=lambda: os.getenv("DB_USER", ""))
     password: str = field(default_factory=lambda: os.getenv("DB_PASSWORD", ""))
 
@@ -56,7 +56,7 @@ class DatabaseConfig:
 @dataclass
 class AnalysisConfig:
     # Confidence >= threshold → skip LLM, return deterministic answer
-    confidence_threshold: float = 0.7
+    confidence_threshold: float = 0.85
     # Incidents with similarity this close = same cluster
     cluster_spread_threshold: float = 0.10
     # Minimum occurrences to flag as a recurring pattern
@@ -101,7 +101,7 @@ class AppConfig:
     analysis: AnalysisConfig = field(default_factory=AnalysisConfig)
     cache: CacheConfig = field(default_factory=CacheConfig)
     metrics_log_path: str = "metrics.jsonl"
-    log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
+    log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "DEBUG"))
 
 
 # Singleton — import this everywhere
